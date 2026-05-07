@@ -5,6 +5,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import AudioWaveform from "@/components/AudioWaveform";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Heart } from "lucide-react";
 
 // SVG Icon helpers
 const IconRewind = () => (
@@ -49,7 +50,7 @@ const IconDots = () => (
 );
 
 export default function BottomPlayer() {
-  const { currentTrack, isPlaying, togglePlay, next, prev, isShuffle, toggleShuffle, volume, setVolume } =
+  const { currentTrack, isPlaying, togglePlay, next, prev, isShuffle, toggleShuffle, volume, setVolume, isLiked, toggleLike, toggleNowPlaying } =
     usePlayerStore();
   const [showVolume, setShowVolume] = useState(false);
 
@@ -87,6 +88,15 @@ export default function BottomPlayer() {
       >
         {/* LEFT: Playback controls */}
         <div className="flex items-center gap-1 shrink-0">
+          <button 
+            onClick={() => toggleLike(currentTrack.id)}
+            className="p-1 transition-transform active:scale-125"
+            aria-label="Like"
+          >
+            <Heart 
+              className={`w-4 h-4 ${isLiked(currentTrack.id) ? "fill-pink-500 text-pink-500" : "text-white/40"}`} 
+            />
+          </button>
           <button
             onClick={prev}
             className="text-white/70 hover:text-white active:scale-90 transition-all p-1"
@@ -111,7 +121,10 @@ export default function BottomPlayer() {
         </div>
 
         {/* CENTER: Track info */}
-        <div className="flex items-center gap-2 flex-1 min-w-0 mx-1">
+        <div 
+          onClick={toggleNowPlaying}
+          className="flex items-center gap-2 flex-1 min-w-0 mx-1 cursor-pointer"
+        >
           <div className="relative w-9 h-9 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/20">
             <Image src={currentTrack.albumArt} alt={currentTrack.title} fill className="object-cover" />
           </div>

@@ -14,6 +14,7 @@ interface PlayerState {
   likedSongs: string[]; // track IDs
   recentlyPlayed: Track[];
   profile: UserProfile | null;
+  isNowPlayingOpen: boolean;
 
   // Actions
   setQueue: (tracks: Track[], startIndex?: number) => void;
@@ -32,6 +33,7 @@ interface PlayerState {
   toggleLike: (trackId: string) => void;
   isLiked: (trackId: string) => boolean;
   setProfile: (profile: UserProfile | null) => void;
+  toggleNowPlaying: () => void;
 }
 
 const loadLiked = (): string[] => {
@@ -57,6 +59,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   likedSongs: loadLiked(),
   recentlyPlayed: loadRecent(),
   profile: null,
+  isNowPlayingOpen: false,
 
   setQueue: (tracks, startIndex = 0) => {
     set({ queue: tracks, activeIndex: startIndex, currentTrack: tracks[startIndex] || null });
@@ -116,4 +119,5 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
   isLiked: (trackId) => get().likedSongs.includes(trackId),
   setProfile: (profile) => set({ profile }),
+  toggleNowPlaying: () => set((s) => ({ isNowPlayingOpen: !s.isNowPlayingOpen })),
 }));

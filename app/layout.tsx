@@ -5,6 +5,7 @@ import BottomPlayer from "@/components/BottomPlayer";
 import BottomNav from "@/components/BottomNav";
 import AudioEngine from "@/components/AudioEngine";
 import AuthListener from "@/components/AuthListener";
+import NowPlayingView from "@/components/NowPlayingView";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -42,6 +43,7 @@ export default function RootLayout({
         <ServiceWorkerRegistrar />
         <AuthListener />
         <AudioEngine />
+        <NowPlayingView />
         
         <main className="h-full pb-32">
           {children}
