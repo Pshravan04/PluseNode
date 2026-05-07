@@ -67,7 +67,7 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex flex-col justify-center">
-          <CarouselView />
+          <CarouselView tracks={sections[0]?.tracks || []} />
           <TrackInfo />
         </div>
       </section>
