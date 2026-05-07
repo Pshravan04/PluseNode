@@ -99,7 +99,7 @@ export default function NowPlayingView() {
                   <p className="text-lg text-white/60 truncate">{currentTrack.artist}</p>
                 </div>
                 <button 
-                  onClick={() => toggleLike(currentTrack.id)}
+                  onClick={() => toggleLike(currentTrack)}
                   className="p-2"
                 >
                   <Heart className={`w-7 h-7 ${isLiked(currentTrack.id) ? "fill-pink-500 text-pink-500" : "text-white/40"}`} />

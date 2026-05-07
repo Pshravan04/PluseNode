@@ -11,7 +11,7 @@ interface PlayerState {
   duration: number;
   isShuffle: boolean;
   isRepeat: boolean;
-  likedSongs: string[]; // track IDs
+  likedSongs: Track[];
   recentlyPlayed: Track[];
   profile: UserProfile | null;
   isNowPlayingOpen: boolean;
@@ -30,13 +30,13 @@ interface PlayerState {
   setDuration: (d: number) => void;
   toggleShuffle: () => void;
   toggleRepeat: () => void;
-  toggleLike: (trackId: string) => void;
+  toggleLike: (track: Track) => void;
   isLiked: (trackId: string) => boolean;
   setProfile: (profile: UserProfile | null) => void;
   toggleNowPlaying: () => void;
 }
 
-const loadLiked = (): string[] => {
+const loadLiked = (): Track[] => {
   if (typeof window === "undefined") return [];
   try { return JSON.parse(localStorage.getItem("pn_liked") || "[]"); } catch { return []; }
 };
@@ -108,16 +108,17 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   toggleShuffle: () => set((s) => ({ isShuffle: !s.isShuffle })),
   toggleRepeat: () => set((s) => ({ isRepeat: !s.isRepeat })),
 
-  toggleLike: (trackId) => {
-    const liked = get().likedSongs;
-    const updated = liked.includes(trackId)
-      ? liked.filter((id) => id !== trackId)
-      : [...liked, trackId];
+  toggleLike: (track) => {
+    const { likedSongs } = get();
+    const isLiked = likedSongs.some(t => t.id === track.id);
+    const updated = isLiked
+      ? likedSongs.filter((t) => t.id !== track.id)
+      : [track, ...likedSongs];
     if (typeof window !== "undefined") localStorage.setItem("pn_liked", JSON.stringify(updated));
     set({ likedSongs: updated });
   },
 
-  isLiked: (trackId) => get().likedSongs.includes(trackId),
+  isLiked: (trackId) => get().likedSongs.some(t => t.id === trackId),
   setProfile: (profile) => set({ profile }),
   toggleNowPlaying: () => set((s) => ({ isNowPlayingOpen: !s.isNowPlayingOpen })),
 }));

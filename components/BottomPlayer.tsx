@@ -89,7 +89,7 @@ export default function BottomPlayer() {
         {/* LEFT: Playback controls */}
         <div className="flex items-center gap-1 shrink-0">
           <button 
-            onClick={() => toggleLike(currentTrack.id)}
+            onClick={() => toggleLike(currentTrack)}
             className="p-1 transition-transform active:scale-125"
             aria-label="Like"
           >
