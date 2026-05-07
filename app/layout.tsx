@@ -4,6 +4,7 @@ import "./globals.css";
 import BottomPlayer from "@/components/BottomPlayer";
 import BottomNav from "@/components/BottomNav";
 import AudioEngine from "@/components/AudioEngine";
+import AuthListener from "@/components/AuthListener";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -39,6 +40,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-background text-foreground overflow-hidden h-[100dvh]`}>
         <ServiceWorkerRegistrar />
+        <AuthListener />
         <AudioEngine />
         
         <main className="h-full pb-32">
