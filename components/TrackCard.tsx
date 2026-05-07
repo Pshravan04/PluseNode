@@ -6,9 +6,10 @@ import { Track } from "@/store/types";
 
 interface TrackCardProps {
   track: Track;
-  index: number;
-  allTracks: Track[];
+  index?: number;
+  allTracks?: Track[];
   compact?: boolean;
+  onClick?: () => void;
 }
 
 function formatDuration(seconds: number): string {
@@ -17,16 +18,20 @@ function formatDuration(seconds: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function TrackCard({ track, index, allTracks, compact = false }: TrackCardProps) {
+export default function TrackCard({ track, index, allTracks, compact = false, onClick }: TrackCardProps) {
   const { currentTrack, isPlaying, play, setQueue, togglePlay } = usePlayerStore();
   const isActive = currentTrack?.id === track.id;
 
   const handleClick = () => {
-    if (isActive) {
-      togglePlay();
-    } else {
-      setQueue(allTracks, index);
-      play(track, index);
+    if (onClick) {
+      onClick();
+    } else if (allTracks && index !== undefined) {
+      if (isActive) {
+        togglePlay();
+      } else {
+        setQueue(allTracks, index);
+        play(track, index);
+      }
     }
   };
 
