@@ -1,13 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import BottomPlayer from "@/components/BottomPlayer";
-import BottomNav from "@/components/BottomNav";
-import AudioEngine from "@/components/AudioEngine";
-import AuthListener from "@/components/AuthListener";
-import NowPlayingView from "@/components/NowPlayingView";
-import PWAInstallPrompt from "@/components/PWAInstallPrompt";
-import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
+import ClientWrapper from "@/components/ClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,24 +35,9 @@ export default function RootLayout({
         <link rel="icon" href="/icon-192.png" />
       </head>
       <body className={`${inter.className} bg-background text-foreground overflow-hidden h-[100dvh]`}>
-        <ServiceWorkerRegistrar />
-        <AuthListener />
-        <AudioEngine />
-        <NowPlayingView />
-        <PWAInstallPrompt />
-        
-        <main className="h-full pb-32">
+        <ClientWrapper>
           {children}
-        </main>
-
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 space-y-4 pointer-events-none">
-          <div className="pointer-events-auto">
-            <BottomPlayer />
-          </div>
-          <div className="pointer-events-auto">
-            <BottomNav />
-          </div>
-        </div>
+        </ClientWrapper>
       </body>
     </html>
   );

@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import { Track, UserProfile } from "@/store/types";
+import { Track, UserProfile, AppStage } from "@/store/types";
 
 interface PlayerState {
+  stage: AppStage;
   queue: Track[];
   activeIndex: number;
   currentTrack: Track | null;
@@ -17,6 +18,7 @@ interface PlayerState {
   isNowPlayingOpen: boolean;
 
   // Actions
+  setStage: (stage: AppStage) => void;
   setQueue: (tracks: Track[], startIndex?: number) => void;
   play: (track: Track, index: number) => void;
   pause: () => void;
@@ -47,6 +49,7 @@ const loadRecent = (): Track[] => {
 };
 
 export const usePlayerStore = create<PlayerState>((set, get) => ({
+  stage: "LOADER",
   queue: [],
   activeIndex: 0,
   currentTrack: null,
@@ -60,6 +63,8 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   recentlyPlayed: loadRecent(),
   profile: null,
   isNowPlayingOpen: false,
+
+  setStage: (stage) => set({ stage }),
 
   setQueue: (tracks, startIndex = 0) => {
     set({ queue: tracks, activeIndex: startIndex, currentTrack: tracks[startIndex] || null });

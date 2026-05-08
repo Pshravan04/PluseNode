@@ -1,162 +1,153 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;700;900&display=swap');
 
-/* ============================================================
-   BASE RESET & MOBILE-FIRST SETUP
-   ============================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #030014;
+  --foreground: #ffffff;
+  
+  --primary: #7c3aed;
+  --primary-deep: #4c1d95;
+  --primary-glow: rgba(124, 58, 237, 0.4);
+  
+  --secondary: #db2777;
+  --secondary-deep: #831843;
+  --secondary-glow: rgba(219, 39, 119, 0.3);
+  
+  --accent: #0d9488;
+  --accent-glow: rgba(13, 148, 136, 0.3);
+  
+  --glass: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-thick: rgba(255, 255, 255, 0.08);
+  
+  --card-bg: rgba(255, 255, 255, 0.015);
+  --card-border: rgba(255, 255, 255, 0.04);
 }
 
-html,
-body {
-  height: 100%;
-  height: 100dvh;
-  overflow: hidden;
-  background: #1a1a2e;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  body {
+    @apply bg-[#020108] text-white antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  }
 }
 
-/* Hide scrollbars globally */
-::-webkit-scrollbar {
-  display: none;
-}
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10;
+  }
+  
+  .glass-card {
+    @apply bg-white/[0.03] backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)];
+  }
 
-/* Prevent accidental text selection on UI elements */
-.select-none {
-  -webkit-user-select: none;
-  user-select: none;
-}
+  .glass-panel {
+    @apply bg-white/[0.01] backdrop-blur-[100px] border border-white/[0.05] shadow-[0_40px_80px_rgba(0,0,0,0.8)];
+  }
 
-/* ============================================================
-   GLASSMORPHISM PILL
-   ============================================================ */
-.glass-pill {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
+  .glass-thick {
+    @apply bg-white/10 backdrop-blur-3xl border border-white/20;
+  }
 
-/* ============================================================
-   AUDIO WAVEFORM ANIMATION
-   ============================================================ */
-.waveform-bar {
-  width: 3px;
-  height: 4px;
-  background: rgba(167, 139, 250, 0.7);
-  border-radius: 2px;
-  transition: height 0.15s ease;
-}
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-primary via-secondary to-accent;
+    background-size: 200% auto;
+    animation: gradient-flow 8s linear infinite;
+  }
 
-.waveform-bar.animating {
-  animation: waveform 1.2s ease-in-out infinite alternate;
+  .text-gradient-premium {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white/90 to-white/60;
+    filter: drop-shadow(0 0 30px rgba(255,255,255,0.15));
+  }
+
+  .mesh-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(219, 39, 119, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(13, 148, 136, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 15% 85%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #030014 0%, #030014 100%);
+    filter: blur(100px);
+  }
+
+  .waveform-bar {
+    @apply w-1 bg-primary rounded-full;
+    height: 8px;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+  }
+
+  .waveform-bar.animating {
+    animation: waveform 1.2s ease-in-out infinite;
+  }
+
+  .font-premium {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.25);
+  }
+
+  .glow-border {
+    @apply border border-white/10 relative;
+  }
+
+  .glow-border::after {
+    content: '';
+    @apply absolute inset-0 rounded-[inherit] border border-primary/20 opacity-0 transition-opacity duration-500;
+    box-shadow: inset 0 0 15px rgba(139, 92, 246, 0.1);
+  }
+
+  .glow-border:hover::after {
+    @apply opacity-100;
+  }
 }
 
 @keyframes waveform {
-  0%   { height: 3px; }
-  25%  { height: 10px; }
-  50%  { height: 6px; }
-  75%  { height: 14px; }
-  100% { height: 4px; }
+  0%, 100% { height: 8px; }
+  50% { height: 24px; }
 }
 
-/* ============================================================
-   SCROLLABLE CONTENT AREA (for search/library pages)
-   ============================================================ */
-.scroll-content {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* ============================================================
-   APP BACKGROUND GRADIENT
-   ============================================================ */
-.app-bg {
-  background: radial-gradient(
-      ellipse at 30% 20%,
-      rgba(94, 62, 140, 0.45) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse at 70% 80%,
-      rgba(45, 32, 95, 0.5) 0%,
-      transparent 60%
-    ),
-    linear-gradient(180deg, #3d3060 0%, #1e1b3a 40%, #141228 100%);
-  min-height: 100dvh;
+.mask-fade-right {
+  mask-image: linear-gradient(to right, black 80%, transparent 100%);
 }
 
-/* ============================================================
-   RANGE INPUT STYLING
-   ============================================================ */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.2);
-  outline: none;
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #a78bfa;
-  cursor: pointer;
-  box-shadow: 0 0 6px rgba(167, 139, 250, 0.6);
+.btn-premium {
+  @apply relative overflow-hidden bg-white text-black font-black py-4 px-8 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)];
 }
 
-/* ============================================================
-   PROGRESS BAR
-   ============================================================ */
-.progress-bar {
-  height: 3px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
-  overflow: hidden;
+.btn-premium::after {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full transition-transform duration-1000;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
-  border-radius: 2px;
-  transition: width 0.5s linear;
-}
-
-/* ============================================================
-   SHIMMER LOADING EFFECT
-   ============================================================ */
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+.btn-premium:hover::after {
+  @apply translate-x-full;
 }

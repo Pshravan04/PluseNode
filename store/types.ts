@@ -26,6 +26,8 @@ export interface UserProfile {
   language_preferences: string[];
 }
 
+export type AppStage = "LOADER" | "SPLASH" | "AUTH" | "ONBOARDING" | "MAIN";
+
 export interface Playlist {
   id: string;
   name: string;
