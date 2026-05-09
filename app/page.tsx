@@ -10,7 +10,7 @@ import TrackCard from "@/components/TrackCard";
 import { Track } from "@/store/types";
 import { Music2, Sparkles, TrendingUp, History, Play, Heart, Bell } from "lucide-react";
 
-import { BackgroundParticles } from "@/components/BackgroundParticles";
+import BackgroundParticles from "@/components/BackgroundParticles";
 
 export default function Home() {
   const { currentTrack, setQueue, profile, recentlyPlayed } = usePlayerStore();
