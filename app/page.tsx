@@ -84,7 +84,7 @@ export default function Home() {
           </div>
           <div>
             <p className="text-[10px] text-white/20 uppercase tracking-[0.5em] font-black">Archive Access</p>
-            <h1 className="text-4xl font-black tracking-[-0.05em] text-white font-premium">{profile?.full_name?.split(' ')[0] || "Explorer"}</h1>
+            <h1 className="text-4xl font-black tracking-[-0.05em] text-white font-premium">{profile?.display_name?.split(' ')[0] || "Explorer"}</h1>
           </div>
         </motion.div>
         
