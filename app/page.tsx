@@ -10,8 +10,6 @@ import TrackCard from "@/components/TrackCard";
 import { Track } from "@/store/types";
 import { Music2, Sparkles, TrendingUp, History, Play, Heart, Bell } from "lucide-react";
 
-import BackgroundParticles from "@/components/BackgroundParticles";
-
 export default function Home() {
   const { currentTrack, setQueue, profile, recentlyPlayed } = usePlayerStore();
   const [sections, setSections] = useState<{ title: string; tracks: Track[] }[]>([]);
@@ -38,107 +36,73 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="h-[100dvh] flex items-center justify-center bg-[#030014] relative overflow-hidden">
-        <BackgroundParticles />
-        <div className="flex flex-col items-center gap-12 relative z-10">
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.15, 1],
-              rotate: [0, 8, -8, 0],
-              filter: ["blur(0px)", "blur(4px)", "blur(0px)"]
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="w-32 h-32 glass-thick rounded-[3rem] flex items-center justify-center shadow-[0_0_100px_rgba(124,58,237,0.4)] border-white/20"
-          >
-            <Music2 className="w-16 h-16 text-primary" />
-          </motion.div>
-          <div className="text-center">
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-white font-black text-4xl tracking-[-0.07em] font-premium"
-            >
-              Syncing <span className="text-gradient">Frequency</span>
-            </motion.p>
-            <p className="text-white/20 text-[12px] uppercase tracking-[0.6em] font-black mt-4">Harmonizing your universe</p>
-          </div>
+      <div className="h-[100dvh] flex items-center justify-center bg-background relative">
+        <div className="flex flex-col items-center gap-6">
+          <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-accent animate-spin" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-48 scrollbar-hide relative bg-[#030014]">
-      <BackgroundParticles />
+    <div className="h-full overflow-y-auto pb-48 scrollbar-hide relative bg-background">
       
-      {/* Immersive Header */}
-      <header className="px-8 pt-20 pb-10 flex items-center justify-between sticky top-0 z-[60] backdrop-blur-3xl bg-[#030014]/20 border-b border-white/5">
+      {/* Minimalist Top Navigation */}
+      <header className="px-6 md:px-12 pt-12 pb-6 flex items-center justify-between sticky top-0 z-[60] glass-header transition-all">
         <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-6"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4"
         >
-          <div className="w-16 h-16 rounded-2xl glass-panel p-1 relative group overflow-hidden border-white/10">
-            <img src={profile?.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=pulse"} className="w-full h-full object-cover rounded-[14px] group-hover:scale-110 transition-transform duration-700" alt="" />
-            <div className="absolute inset-0 rounded-[14px] ring-1 ring-white/20 group-hover:ring-primary/50 transition-all" />
+          <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0">
+            <img src={profile?.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=pulse"} className="w-full h-full object-cover" alt="Profile" />
           </div>
-          <div>
-            <p className="text-[10px] text-white/20 uppercase tracking-[0.5em] font-black">Archive Access</p>
-            <h1 className="text-4xl font-black tracking-[-0.05em] text-white font-premium">{profile?.display_name?.split(' ')[0] || "Explorer"}</h1>
+          <div className="flex flex-col">
+            <p className="text-xs text-muted font-medium uppercase tracking-widest">Good Evening</p>
+            <h1 className="text-xl font-semibold text-foreground tracking-tight">{profile?.display_name?.split(' ')[0] || "Explorer"}</h1>
           </div>
         </motion.div>
         
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <motion.button 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
-            className="w-16 h-16 rounded-2xl glass flex items-center justify-center transition-all border-white/5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-white/5 text-muted hover:text-foreground interactive-element"
           >
-            <Bell className="w-7 h-7 text-white/30" />
-          </motion.button>
-          <motion.button 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-            whileHover={{ scale: 1.1, backgroundColor: "rgba(139,92,246,0.15)" }}
-            className="w-16 h-16 rounded-2xl glass flex items-center justify-center transition-all border-white/5"
-          >
-            <Sparkles className="w-7 h-7 text-primary" />
+            <Bell className="w-5 h-5" />
           </motion.button>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <div className="relative z-10 px-8">
+      <div className="relative z-10 px-6 md:px-12">
         
-        {/* Hero Section: Featured Suggestions */}
-        <section className="pt-12 mb-20">
+        {/* Hero Section */}
+        <section className="pt-10 mb-20">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-12 flex items-center justify-between"
+            className="mb-10"
           >
-            <div>
-              <h2 className="text-6xl font-black tracking-[-0.07em] font-premium flex items-center gap-6">
-                Featured <span className="text-gradient">Suggestions</span>
-              </h2>
-              <p className="text-[12px] text-white/20 uppercase tracking-[0.6em] font-black mt-3">Curated for your unique sonic signature</p>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-3">
+              Discovery
+            </h2>
+            <p className="text-muted text-lg max-w-xl">Curated selections tailored to your sophisticated acoustic profile.</p>
           </motion.div>
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex flex-col gap-16"
+            transition={{ delay: 0.1 }}
+            className="flex flex-col gap-10"
           >
-            <div className="relative">
+            <div className="relative -mx-6 md:mx-0 px-6 md:px-0">
               <CarouselView tracks={sections[0]?.tracks || []} />
             </div>
-            <div className="glass-panel rounded-[4rem] p-2 border-white/10 shadow-[0_60px_120px_rgba(0,0,0,0.8)] overflow-hidden">
-               <div className="absolute inset-0 bg-primary/5 blur-3xl" />
+            
+            <div className="glass-panel p-6 md:p-8 mt-4 overflow-hidden">
                <TrackInfo />
             </div>
           </motion.div>
