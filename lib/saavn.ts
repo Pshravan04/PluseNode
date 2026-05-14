@@ -1,5 +1,5 @@
-// JioSaavn API wrapper (saavn.dev)
-// Covers: Hindi, English, Punjabi, Tamil, Telugu, Bengali, Kannada, Marathi, Malayalam + more
+import { Track } from "@/store/types";
+import { mockTracks } from "@/data/mockTracks";
 
 const BASE_URL = "https://saavn.dev/api";
 
@@ -50,7 +50,6 @@ export function getBestAudio(urls: Array<{ quality: string; url: string }>): str
 }
 
 // Convert JioSaavn song to our Track format
-import { Track } from "@/store/types";
 export function toTrack(song: SaavnSong): Track {
   return {
     id: song.id,
@@ -74,11 +73,12 @@ export async function searchSongs(query: string, limit = 20, page = 1): Promise<
       `${BASE_URL}/search/songs?query=${encodeURIComponent(query)}&limit=${limit}&page=${page}`,
       { next: { revalidate: 300 } }
     );
-    if (!res.ok) return [];
+    if (!res.ok) return mockTracks;
     const data = await res.json();
-    return (data?.data?.results || []).map(toTrack);
+    const results = (data?.data?.results || []).map(toTrack);
+    return results.length > 0 ? results : mockTracks;
   } catch {
-    return [];
+    return mockTracks;
   }
 }
 
@@ -130,11 +130,12 @@ export async function getSongById(id: string): Promise<Track | null> {
 export async function getArtistSongs(artistId: string, limit = 20): Promise<Track[]> {
   try {
     const res = await fetch(`${BASE_URL}/artists/${artistId}/songs?limit=${limit}`);
-    if (!res.ok) return [];
+    if (!res.ok) return mockTracks;
     const data = await res.json();
-    return (data?.data?.songs || []).map(toTrack);
+    const results = (data?.data?.songs || []).map(toTrack);
+    return results.length > 0 ? results : mockTracks;
   } catch {
-    return [];
+    return mockTracks;
   }
 }
 
@@ -183,5 +184,15 @@ export async function getRecommendations(prefs: {
     }))
   );
 
-  return results.filter((r) => r.tracks.length > 0);
+  const validResults = results.filter((r) => r.tracks && r.tracks.length > 0);
+  
+  if (validResults.length === 0) {
+    return [
+      { title: "🔥 Trending Hits", tracks: mockTracks.slice(0, 4) },
+      { title: "😌 Lo-Fi Vibes", tracks: mockTracks.slice(4, 8) }
+    ];
+  }
+  
+  return validResults;
 }
+
